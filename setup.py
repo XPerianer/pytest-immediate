@@ -24,7 +24,9 @@ setup(
     long_description=read('README.rst'),
     py_modules=['pytest_immediate'],
     python_requires='>=3.5',
-    install_requires=['pytest>=6.1.2'],
+    install_requires=[
+        'pytest>=6.1.2',
+        'python-socketio>=5.0.0'],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Framework :: Pytest',
