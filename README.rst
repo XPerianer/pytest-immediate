@@ -2,21 +2,9 @@
 pytest-immediate
 ================
 
-.. image:: https://img.shields.io/pypi/v/pytest-immediate.svg
-    :target: https://pypi.org/project/pytest-immediate
-    :alt: PyPI version
-
-.. image:: https://img.shields.io/pypi/pyversions/pytest-immediate.svg
-    :target: https://pypi.org/project/pytest-immediate
-    :alt: Python versions
-
 .. image:: https://travis-ci.org/XPerianer/pytest-immediate.svg?branch=master
     :target: https://travis-ci.org/XPerianer/pytest-immediate
     :alt: See Build Status on Travis CI
-
-.. image:: https://ci.appveyor.com/api/projects/status/github/XPerianer/pytest-immediate?branch=master
-    :target: https://ci.appveyor.com/project/XPerianer/pytest-immediate/branch/master
-    :alt: See Build Status on AppVeyor
 
 A plugin helping to get immediate feedback with pytest. Reordering + report of errors using websockets.
 
