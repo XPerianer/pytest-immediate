@@ -37,13 +37,14 @@ def pytest_addoption(parser):
 
     # parser.addini('HELLO', 'Dummy pytest.ini setting')
 
+
 sio = None
+
 
 def setup_server(sio):
     uri = saved_config_options.remote_connection_address
     sio = socketio.Client()
     sio.connect(uri)
-
 
 
 @pytest.hookimpl()
@@ -68,6 +69,7 @@ def get_test_index(test):
         return test_indexes[test_name]
     return max_test_index
 
+
 @pytest.hookimpl()
 def pytest_collection_modifyitems(session, config, items: List[Item]):
     global saved_config_options
@@ -86,7 +88,6 @@ def pytest_collection_modifyitems(session, config, items: List[Item]):
 
     if config.option.send_reports:
         setup_server(sio)
-
 
 
 @pytest.hookimpl()
