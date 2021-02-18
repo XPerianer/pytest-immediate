@@ -1,64 +1,33 @@
 # -*- coding: utf-8 -*-
 
-
-def test_bar_fixture(testdir):
-    """Make sure that pytest accepts our fixture."""
-
-    # create a temporary pytest test module
-    testdir.makepyfile("""
-        def test_sth(bar):
-            assert bar == "europython2015"
-    """)
-
-    # run pytest with the following cmd args
-    result = testdir.runpytest(
-        '--foo=europython2015',
-        '-v'
-    )
-
-    # fnmatch_lines does an assertion internally
-    result.stdout.fnmatch_lines([
-        '*::test_sth PASSED*',
-    ])
-
-    # make sure that that we get a '0' exit code for the testsuite
-    assert result.ret == 0
-
-
-def test_help_message(testdir):
-    result = testdir.runpytest(
-        '--help',
-    )
-    # fnmatch_lines does an assertion internally
-    result.stdout.fnmatch_lines([
-        'immediate:',
-        '*--foo=DEST_FOO*Set the value for the fixture "bar".',
-    ])
-
-
-def test_hello_ini_setting(testdir):
-    testdir.makeini("""
-        [pytest]
-        HELLO = world
-    """)
-
+def test_reordering(testdir):
     testdir.makepyfile("""
         import pytest
 
-        @pytest.fixture
-        def hello(request):
-            return request.config.getini('HELLO')
+        def test_one():
+            print("One")
 
-        def test_hello_world(hello):
-            assert hello == 'world'
+        def test_two():
+            print("Two")
     """)
 
-    result = testdir.runpytest('-v')
+    result = testdir.runpytest(
+        '-v',
+        '--test-ordering=["test_reordering.py::test_one","test_reordering.py::test_two"]',
+    )
 
-    # fnmatch_lines does an assertion internally
     result.stdout.fnmatch_lines([
-        '*::test_hello_world PASSED*',
+        '*::test_one PASSED*',
+        '*::test_two PASSED*',
     ])
 
-    # make sure that that we get a '0' exit code for the testsuite
-    assert result.ret == 0
+    results_reordering = testdir.runpytest(
+        '-v',
+        '--test-ordering=["test_reordering.py::test_two","test_reordering.py::test_one"]',
+    )
+
+    # Check if the order was switched
+    results_reordering.stdout.fnmatch_lines([
+        '*::test_two PASSED*',
+        '*::test_one PASSED*',
+    ])

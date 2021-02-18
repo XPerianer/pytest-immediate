@@ -26,7 +26,8 @@ setup(
     python_requires='>=3.5',
     install_requires=[
         'pytest>=6.1.2',
-        'python-socketio>=5.0.0'],
+        'python-socketio>=5.0.0'
+    ],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Framework :: Pytest',

@@ -7,31 +7,49 @@ import json
 import socketio
 
 from _pytest.nodes import Item
-from flask import Config
-from requests import Session
 
 
 def pytest_addoption(parser):
     group = parser.getgroup('immediate')
     group.addoption(
-        '--test_ordering',
+        '--test-ordering',
         action='store',
         dest='test_ordering',
         default='[]',
         help='Set the ordering of the tests, by the name of the test'
     )
 
+    group.addoption(
+        '--send-results',
+        action='store_true',
+        dest='send_reports',
+        default=False,
+        help='Send the test reports to the server'
+    )
+
+    group.addoption(
+        '--remote-connection-address',
+        action='store',
+        dest='remote_connection_address',
+        default='ws://localhost:9001',
+        help='Set the remote address. Defaults to ws://localhost:9001'
+    )
+
     # parser.addini('HELLO', 'Dummy pytest.ini setting')
 
+sio = None
 
-uri = "ws://localhost:9001"
-sio = socketio.Client()
-sio.connect(uri)
+def setup_server(sio):
+    uri = saved_config_options.remote_connection_address
+    sio = socketio.Client()
+    sio.connect(uri)
+
 
 
 @pytest.hookimpl()
 def pytest_runtest_logreport(report):
-    sio.emit("testreport", {"id": report.nodeid, "when": report.when, "outcome": report.passed})
+    if saved_config_options.send_results:
+        sio.emit("testreport", {"id": report.nodeid, "when": report.when, "outcome": report.passed})
 
 
 @pytest.hookimpl()
@@ -50,34 +68,36 @@ def get_test_index(test):
         return test_indexes[test_name]
     return max_test_index
 
-
 @pytest.hookimpl()
-def pytest_collection_modifyitems(session: Session, config: Config, items: List[Item]):
+def pytest_collection_modifyitems(session, config, items: List[Item]):
+    global saved_config_options
+    saved_config_options = config.option
     test_ordering = json.loads(config.option.test_ordering)
     print(test_ordering)
+    test_indexes.clear()
     for index, test_name in enumerate(test_ordering):
+        if test_name in test_indexes:
+            continue
         test_indexes[test_name] = index
 
     items.sort(key=get_test_index)
     for i in items:
         print(i)
 
+    if config.option.send_reports:
+        setup_server(sio)
 
-uri = "ws://localhost:9001"
-sio = socketio.Client()
-sio.connect(uri)
 
 
 @pytest.hookimpl()
 def pytest_runtest_logreport(report):
-    sio.emit("testreport", {"id": report.nodeid, "when": report.when, "outcome": report.passed})
+    if saved_config_options.send_reports:
+        sio.emit("testreport", {"id": report.nodeid, "when": report.when, "outcome": report.passed})
 
 
 @pytest.hookimpl()
 def pytest_sessionfinish():
-    sio.disconnect()
-
-
-@pytest.fixture
-def bar(request):
-    return request.config.option.dest_foo
+    print("Disconnect")
+    if sio:
+        sio.disconnect()
+        sio.wait()
