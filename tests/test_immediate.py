@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+
 def test_reordering(testdir):
     testdir.makepyfile("""
         import pytest
@@ -13,7 +14,8 @@ def test_reordering(testdir):
 
     result = testdir.runpytest(
         '-v',
-        '--test-ordering=["test_reordering.py::test_one","test_reordering.py::test_two"]',
+        '--test-ordering=["test_reordering.py::test_one",'
+        '"test_reordering.py::test_two"]',
     )
 
     result.stdout.fnmatch_lines([
@@ -23,7 +25,8 @@ def test_reordering(testdir):
 
     results_reordering = testdir.runpytest(
         '-v',
-        '--test-ordering=["test_reordering.py::test_two","test_reordering.py::test_one"]',
+        '--test-ordering=["test_reordering.py::test_two",'
+        '"test_reordering.py::test_one"]',
     )
 
     # Check if the order was switched

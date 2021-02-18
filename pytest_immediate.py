@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
+import json
 from typing import List
 
 import pytest
-
-import json
 import socketio
-
 from _pytest.nodes import Item
 
 
@@ -50,15 +48,13 @@ def setup_server(sio):
 @pytest.hookimpl()
 def pytest_runtest_logreport(report):
     if saved_config_options.send_results:
-        sio.emit("testreport", {"id": report.nodeid, "when": report.when, "outcome": report.passed})
+        sio.emit("testreport", {"id": report.nodeid,
+                                "when": report.when,
+                                "outcome": report.passed})
 
 
-@pytest.hookimpl()
-def pytest_sessionfinish():
-    sio.disconnect()
-
-
-# TODO this is ugly hardcoded, as well as should not be global. The function might be fixed with currying
+# TODO this is ugly hardcoded, as well as should not be global.
+#  The function might be fixed with currying
 max_test_index = 100000
 test_indexes = {}
 
@@ -91,14 +87,7 @@ def pytest_collection_modifyitems(session, config, items: List[Item]):
 
 
 @pytest.hookimpl()
-def pytest_runtest_logreport(report):
-    if saved_config_options.send_reports:
-        sio.emit("testreport", {"id": report.nodeid, "when": report.when, "outcome": report.passed})
-
-
-@pytest.hookimpl()
 def pytest_sessionfinish():
-    print("Disconnect")
     if sio:
         sio.disconnect()
         sio.wait()
