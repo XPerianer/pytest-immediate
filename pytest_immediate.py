@@ -47,7 +47,7 @@ def setup_server(sio):
 
 @pytest.hookimpl()
 def pytest_runtest_logreport(report):
-    if saved_config_options.send_results:
+    if saved_config_options.send_reports:
         sio.emit("testreport", {"id": report.nodeid,
                                 "when": report.when,
                                 "outcome": report.passed})

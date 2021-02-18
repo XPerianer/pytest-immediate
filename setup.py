@@ -20,7 +20,8 @@ setup(
     maintainer_email='dominik.meier@student.hpi.de',
     license='MIT',
     url='https://github.com/XPerianer/pytest-immediate',
-    description='A plugin helping to get immediate feedback with pytest. Reordering + report of errors using websockets.',
+    description='A plugin helping to get immediate feedback with pytest.'
+                'Reordering + report of errors using websockets.',
     long_description=read('README.rst'),
     py_modules=['pytest_immediate'],
     python_requires='>=3.5',
