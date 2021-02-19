@@ -18,7 +18,7 @@ def pytest_addoption(parser):
     )
 
     group.addoption(
-        '--send-results',
+        '--send-reports',
         action='store_true',
         dest='send_reports',
         default=False,
@@ -36,10 +36,8 @@ def pytest_addoption(parser):
     # parser.addini('HELLO', 'Dummy pytest.ini setting')
 
 
-sio = None
-
-
-def setup_server(sio):
+def setup_server():
+    global sio
     uri = saved_config_options.remote_connection_address
     sio = socketio.Client()
     sio.connect(uri)
@@ -68,7 +66,7 @@ def get_test_index(test):
 
 @pytest.hookimpl()
 def pytest_collection_modifyitems(session, config, items: List[Item]):
-    global saved_config_options
+    global saved_config_options, sio
     saved_config_options = config.option
     test_ordering = json.loads(config.option.test_ordering)
     print(test_ordering)
@@ -82,8 +80,9 @@ def pytest_collection_modifyitems(session, config, items: List[Item]):
     for i in items:
         print(i)
 
+    sio = None
     if config.option.send_reports:
-        setup_server(sio)
+        setup_server()
 
 
 @pytest.hookimpl()
