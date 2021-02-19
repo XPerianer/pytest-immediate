@@ -48,6 +48,10 @@ def test_socket_send(testdir):
             def test_two():
                 print("Two")
         """)
+
+        testdir.runpytest()
+        assert mock_class.mock_calls == []
+
         testdir.runpytest(
             '--send-reports'
         )
