@@ -5,6 +5,7 @@ import os
 import codecs
 from setuptools import setup
 
+
 def read(fname):
     file_path = os.path.join(os.path.dirname(__file__), fname)
     return codecs.open(file_path, encoding='utf-8').read()
@@ -27,7 +28,7 @@ setup(
     install_requires=[
         'pytest>=6.1.2',
         'python-socketio>=5.0.0'
-    ],
+                ],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Framework :: Pytest',
@@ -45,10 +46,10 @@ setup(
         'Programming Language :: Python :: Implementation :: PyPy',
         'Operating System :: OS Independent',
         'License :: OSI Approved :: MIT License',
-    ],
+                ],
     entry_points={
         'pytest11': [
             'immediate = pytest_immediate',
         ],
-    },
+                },
 )
