@@ -2,9 +2,7 @@
 pytest-immediate
 ================
 
-.. image:: https://travis-ci.org/XPerianer/pytest-immediate.svg?branch=master
-    :target: https://travis-ci.org/XPerianer/pytest-immediate
-    :alt: See Build Status on Travis CI
+[![Build Status](https://travis-ci.com/XPerianer/pytest-immediate.svg?token=zxZSSKHDHsHfpBmXtyLc&branch=main)](https://travis-ci.com/XPerianer/pytest-immediate)
 
 A plugin helping to get immediate feedback with pytest. Reordering + report of errors using websockets.
 
