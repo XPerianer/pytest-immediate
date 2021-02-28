@@ -97,8 +97,6 @@ def pytest_collection_modifyitems(session, config, items: List[Item]):
         test_indexes[test_name] = index
 
     items.sort(key=get_test_index)
-    for i in items:
-        print(i)
 
     sio = None
     if config.option.send_reports:
