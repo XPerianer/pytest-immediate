@@ -2,6 +2,8 @@
 [![Build Status](https://travis-ci.com/XPerianer/pytest-immediate.svg?branch=main)](https://travis-ci.com/XPerianer/pytest-immediate)
 
 A plugin helping to get immediate feedback with pytest. Reordering + report of errors using websockets.
+It is part of the [ImmediateTestFeedback](https://github.com/XPerianer/ImmediateTestFeedback) ecosystem,
+allowing [TestingBackend](https://github.com/XPerianer/TestingBackend) to execute test prioritized and with direct test feedback after failures.
 
 
 ## Features
@@ -21,7 +23,7 @@ A plugin helping to get immediate feedback with pytest. Reordering + report of e
 It's best to do this in a virtual environment.
 Activate it, and then run
 ```
-git clone git@github.com:XPerianer/pytest-immediate.git
+git clone https://github.com/XPerianer/pytest-immediate.git
 cd pytest-immediate
 pip install . -r requirements.txt
 ```
