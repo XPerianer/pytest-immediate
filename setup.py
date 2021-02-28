@@ -26,7 +26,7 @@ setup(
     py_modules=['pytest_immediate'],
     python_requires='>=3.5',
     install_requires=[
-        'pytest>=6.1.2',
+        'pytest>=6.0.0',
         'python-socketio>=5.0.0'
                 ],
     classifiers=[
